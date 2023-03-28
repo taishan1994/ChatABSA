@@ -94,4 +94,4 @@
 
 # 补充
 
-该项目受https://github.com/cocacola-lab/ChatIE/的启发，代码参考其，在此表示感谢。
+该项目受https://github.com/cocacola-lab/ChatIE/ 的启发，代码参考其，在此表示感谢。
