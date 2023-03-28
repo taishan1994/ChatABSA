@@ -10,8 +10,13 @@ os.environ["https_proxy"] = "http://127.0.0.1:1080"
 print(urllib.request.getproxies())
 
 df_access = [
-    ('your api key',)
+    ('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',)
 ]
+
+df_sat = {
+    "english": {"sentiment": ["positive", "negative", "neutral"]},
+    "chinese": {"情感": ["正面的", "负面的", "中性的"]},
+}
 
 df_aet = {
     "english": ["aspect"],
@@ -42,6 +47,11 @@ df_triplett = {
     "chinese": ["方面", "观点", {"情感": ["正面的", "负面的", "中立的"]}],
 }
 # ------------------------
+sa_p = {
+    "english": '''''',
+    "chinese": '''给你一个例子：\n给出的句子是：值得去的地方，石头很奇特，景色优美，环境宜人，适合与朋友家人一起游玩！\n你应该判断该句子的情感是什么，情感从{}里选择。\n输出列表：["正面的"]\n如果不存在，回答：没有。\n返回结果为输出列表。\n\n现在，我给你一个句子，如"{}"，你应该判断句子的情感倾向，并以列表的形式返回结果，如果不存在，则回答：没有。'''
+}
+
 ae_p = {
     "english": '''''',
     "chinese": '''给你一个例子：\n给出的句子是：值得去的地方，石头很奇特，景色优美，环境宜人，适合与朋友家人一起游玩！\n给定实体类型列表:{}\n你应该提取该句子里面的所有{}，这里的观点可能是对某方面的评价、介绍等。\n输出列表：["地方", "石头", "环境", "景色"]\n如果不存在，回答：没有。\n返回结果为输出列表。\n\n现在，我给你一个句子，如"{}"，你应该提取里面所有实体类型为{}的实体，并以列表的形式返回结果，如果不存在，则回答：没有。'''
@@ -49,7 +59,7 @@ ae_p = {
 
 oe_p = {
     "english": '''''',
-    "chinese": '''给你一个例子：\n给出的句子是：值得去的地方，石头很奇特，景色优美，环境宜人，适合与朋友家人一起游玩！\n给定实体类型列表:{}\n你应该提取该句子里面的所有{}，这里的观点可能是对某方面的评价、介绍等，请注意结果不要带上方面。\n输出列表：["值得去", "奇特", "优美", "宜人"]\n如果不存在，回答：没有。\n返回结果为输出列表。\n\n现在，我给你一个句子，如"{}"，你应该提取里面所有实体类型为{}的实体，并以列表的形式返回结果，如果不存在，则回答：没有。'''
+    "chinese": '''给你一个例子：\n给出的句子是：值得去的地方，石头很奇特，景色优美，环境宜人，适合与朋友家人一起游玩！\n给定实体类型列表:{}\n你应该提取该句子里面的所有{}，这里的观点可能是对某方面的评价、介绍等，请注意结果不要带返回某方面，只需要评价或描述，比如不需要石头、景色、环境等方面。\n输出列表：["值得去", "奇特", "优美", "宜人"]\n如果不存在，回答：没有。\n返回结果为输出列表。\n\n现在，我给你一个句子，如"{}"，你应该提取里面所有实体类型为{}的实体，并以列表的形式返回结果，如果不存在，则回答：没有。请注意，结果不需要带上方面'''
 }
 
 alsc_p = {
@@ -101,6 +111,31 @@ def chat(mess):
     res = responde['choices'][0]['message']['content']
     return res
 
+def chat_sa(inda, chatbot):
+    print("---SA---")
+    mess = [{"role": "system", "content": "You are a helpful assistant."}, ]  # chatgpt对话历史
+    typelist = inda['type']
+    sent = inda['sentence']
+    lang = inda['lang']
+    out = []
+    try:
+        print('---begin---')
+
+        s1p = sa_p[lang].format(
+            df_sat[lang]["情感"],
+            sent,
+        )
+        print(s1p)
+
+        # 请求chatgpt
+        mess.append({"role": "user", "content": s1p})
+        text1 = chatbot(mess)
+        out = get_resilt(text1)
+        return out, mess
+
+    except Exception as e:
+        print(e)
+        return ['error:' + str(e)], mess
 
 def chat_ae(inda, chatbot):
     print("---AE---")
@@ -296,7 +331,9 @@ def chat_triplet(inda, chatbot):
         # 请求chatgpt
         mess.append({"role": "user", "content": s1p})
         text1 = chatbot(mess)
+
         out = get_resilt(text1)
+        print(out)
         return out, mess
 
     except Exception as e:
@@ -322,7 +359,9 @@ def chatsa(input_data):
         openai.api_key = input_data['access']
     chatbot = chat
     try:
-        if task == "AE":
+        if task == "SA":
+            input_data["result"], input_data["mess"] = chat_sa(input_data, chatbot)
+        elif task == "AE":
             input_data["result"], input_data["mess"] = chat_ae(input_data, chatbot)
         elif task == "OE":
             input_data["result"], input_data["mess"] = chat_oe(input_data, chatbot)
@@ -358,6 +397,13 @@ if __name__ == '__main__':
     sen = "这才是正规专卖店啊，服务好，产品全面"
     sen = "散热很好、低噪音、做工扎实、键盘舒适"
     lang = "chinese"
+    ind_sa = {
+        "sentence": sen,
+        "type": "",
+        "access": "",
+        "task": "SA",
+        "lang": lang,
+    }
     ind_ae = {
         "sentence": sen,
         "type": "",
@@ -410,14 +456,16 @@ if __name__ == '__main__':
         "task": "TRIPLET",
         "lang": lang,
     }
+    post_data = chatsa(ind_sa)
+    print(post_data)
     # post_data = chatsa(ind_ae)
     # print(post_data)
     # post_data = chatsa(ind_oe)
     # print(post_data)
     # post_data = chatsa(ind_alsc)
     # print(post_data)
-    post_data = chatsa(ind_aoe)
-    print(post_data)
+    # post_data = chatsa(ind_aoe)
+    # print(post_data)
     # post_data = chatsa(ind_aesc)
     # print(post_data)
     # post_data = chatsa(ind_pair)
