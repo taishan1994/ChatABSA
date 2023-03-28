@@ -10,7 +10,7 @@ os.environ["https_proxy"] = "http://127.0.0.1:1080"
 print(urllib.request.getproxies())
 
 df_access = [
-    ('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',)
+    ('your api key',)
 ]
 
 df_aet = {
