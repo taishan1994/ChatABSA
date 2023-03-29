@@ -263,6 +263,7 @@ baidu-uie
 样例数据来源：https://ai.baidu.com/tech/nlp_apply/comment_tag
 
 ### 引用
+```
 @misc{ChatSA,
   author = {Oubo Gong},
   title = {Sentiment analysis with chatGPT},
@@ -271,3 +272,4 @@ baidu-uie
   journal = {GitHub repository},
   url="https://github.com/taishan1994/ChatSA",
 }
+```
