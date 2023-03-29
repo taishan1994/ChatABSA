@@ -5,7 +5,7 @@
 
 复杂点的情感分析，总共有7个子任务。
 
-另外对比了一下百度的[UIE]([PaddleNLP/applications/sentiment_analysis/unified_sentiment_extraction at develop · PaddlePaddle/PaddleNLP · GitHub](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/applications/sentiment_analysis/unified_sentiment_extraction))
+另外对比了一下百度的[UIE](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/applications/sentiment_analysis/unified_sentiment_extraction)
 
 ![7个ABSA子任务](https://img-blog.csdnimg.cn/20210623094417195.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MjM0NDQx,size_16,color_FFFFFF,t_70)
 
