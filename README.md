@@ -261,3 +261,13 @@ baidu-uie
 该项目受https://github.com/cocacola-lab/ChatIE/ 的启发，代码参考其，在此表示感谢。
 
 样例数据来源：https://ai.baidu.com/tech/nlp_apply/comment_tag
+
+### 引用
+@misc{ChatSA,
+  author = {Oubo Gong},
+  title = {Sentiment analysis with chatGPT},
+  year = {2023},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url="https://github.com/taishan1994/ChatSA",
+}
