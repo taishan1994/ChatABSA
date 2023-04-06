@@ -262,6 +262,8 @@ baidu-uie
 
 样例数据来源：https://ai.baidu.com/tech/nlp_apply/comment_tag
 
+[InstructABSA: Instruction Learning for Aspect Based SentimentAnalysis](https://arxiv.org/pdf/2302.08624v3.pdf)
+
 ### 引用
 ```
 @misc{ChatSA,
